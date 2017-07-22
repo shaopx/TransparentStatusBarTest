@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.spx.transparentstatusbartest.CustomInsetsRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:transitionName="sss"
+        android:scaleType="fitXY" />
+
+</com.spx.transparentstatusbartest.CustomInsetsRelativeLayout>
