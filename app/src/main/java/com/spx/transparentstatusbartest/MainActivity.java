@@ -39,7 +39,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, GalleryModel.Callback {
 
     private static final String TAG = "MainActivity";
 
@@ -169,14 +169,12 @@ public class MainActivity extends AppCompatActivity
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                case SCAN_OK:
+                case MSG_SCAN_OK:
                     //关闭进度条
                     mProgressDialog.dismiss();
-                    Log.d(TAG, "handleMessage: group size:" + mGruopMap.size()+", groupList.size:"+groupList);
-                    for (String s : groupList) {
-                        adapterData.add(mGruopMap.get(s).get(0));
-                    }
-                    Log.d(TAG, "handleMessage: adapterData size:" + adapterData.size());
+                    albumList = GalleryModel.getInstance().getAlbumList();
+
+                    Log.d(TAG, "handleMessage: albumList size:" + albumList.size());
                     if (adapter != null) {
                         adapter.notifyDataSetChanged();
                     }
@@ -188,15 +186,13 @@ public class MainActivity extends AppCompatActivity
 
 
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 1;
-    private HashMap<String, List<String>> mGruopMap = new HashMap<String, List<String>>();
-    private List<String> groupList = new ArrayList<>();
-    private List<ImageBean> list = new ArrayList<ImageBean>();
-    private final static int SCAN_OK = 1;
+
+    private final static int MSG_SCAN_OK = 1;
     private ProgressDialog mProgressDialog;
     ViewPager viewPager;
     FragmentAdapter adapter;
 
-    private List<String> adapterData = new ArrayList<>();
+    private List<String> albumList = new ArrayList<>();
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -225,50 +221,13 @@ public class MainActivity extends AppCompatActivity
         //显示进度条
         mProgressDialog = ProgressDialog.show(this, null, "正在加载...");
 
-        new Thread(new Runnable() {
+        GalleryModel.getInstance().loadImages(this, this);
 
-            @Override
-            public void run() {
-                Uri mImageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-                ContentResolver mContentResolver = MainActivity.this.getContentResolver();
+    }
 
-                //只查询jpeg和png的图片
-                Cursor mCursor = mContentResolver.query(mImageUri, null,
-                        MediaStore.Images.Media.MIME_TYPE + "=? or "
-                                + MediaStore.Images.Media.MIME_TYPE + "=?",
-                        new String[]{"image/jpeg", "image/png"}, MediaStore.Images.Media.DATE_MODIFIED);
-
-                if (mCursor == null) {
-                    return;
-                }
-
-                while (mCursor.moveToNext()) {
-                    //获取图片的路径
-                    String path = mCursor.getString(mCursor
-                            .getColumnIndex(MediaStore.Images.Media.DATA));
-                    Log.d(TAG, "run: path:" + path);
-
-                    //获取该图片的父路径名
-                    String parentName = new File(path).getParentFile().getName();
-
-
-                    //根据父路径名将图片放入到mGruopMap中
-                    if (!mGruopMap.containsKey(parentName)) {
-                        groupList.add(parentName);
-                        List<String> chileList = new ArrayList<String>();
-                        chileList.add(path);
-                        mGruopMap.put(parentName, chileList);
-                    } else {
-                        mGruopMap.get(parentName).add(path);
-                    }
-                }
-
-                //通知Handler扫描图片完成
-                mHandler.sendEmptyMessage(SCAN_OK);
-                mCursor.close();
-            }
-        }).start();
-
+    @Override
+    public void onLoadFinished() {
+        mHandler.sendEmptyMessage(MSG_SCAN_OK);
     }
 
     class FragmentAdapter extends FragmentStatePagerAdapter {
@@ -279,19 +238,15 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public Fragment getItem(int position) {
-            String picturePath = adapterData.get(position);
-//            List<String> picNames = mGruopMap.get(pathName);
-//            String picturePath = "";
-//            if (picNames.size() > 0) {
-//                picturePath = picNames.get(0);
-//            }
-            MainActivityFragment fragment = MainActivityFragment.createInstance(picturePath);
+            String album = albumList.get(position);
+
+            MainActivityFragment fragment = MainActivityFragment.createInstance(album);
             return fragment;
         }
 
         @Override
         public int getCount() {
-            return adapterData.size();
+            return albumList.size();
         }
     }
 }

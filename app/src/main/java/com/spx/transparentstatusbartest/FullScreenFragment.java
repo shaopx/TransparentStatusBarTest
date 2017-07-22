@@ -17,23 +17,25 @@ import android.widget.ImageView;
  * Created by Administrator on 2017/7/22.
  */
 
-public class MainActivityFragment extends Fragment {
+public class FullScreenFragment extends Fragment {
     private static final String TAG = "PictureFragment";
     String picturePath = null;
-    String albumName = null;
+    int position = 0;
 
     private View view;
     private ImageView imageView;
 
-    public MainActivityFragment() {
+    private Bitmap bitmap;
+
+
+    public FullScreenFragment() {
 
     }
 
-    public static MainActivityFragment createInstance(String albumName) {
-        MainActivityFragment fragment = new MainActivityFragment();
-
-        fragment.albumName = albumName;
-        fragment.picturePath = GalleryModel.getInstance().getFirstImagePathOfAlbum(albumName);
+    public static Fragment createInstance(String picturePath, int position) {
+        FullScreenFragment fragment = new FullScreenFragment();
+        fragment.picturePath = picturePath;
+        fragment.position = position;
         return fragment;
     }
 
@@ -47,31 +49,32 @@ public class MainActivityFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.picture_fragment_layout, container, false);
         imageView = view.findViewById(R.id.imageView);
-
+        Log.d(TAG, "onCreateView: ....position:" + position+", picturePath:"+picturePath);
         KApp application = (KApp) getActivity().getApplication();
 
         int reqWidth = application.getScreenWidth() / 3;
         int reqHeight = application.getScreenHeight() / 3;
-        final Bitmap bitmap = Utils.decodeSampleBitmapFromFile(picturePath, reqWidth, reqHeight);
+        bitmap = Utils.decodeSampleBitmapFromFile(picturePath, reqWidth, reqHeight);
         if (picturePath != null && bitmap != null) {
             imageView.setImageBitmap(bitmap);
+            application.setBitmap(bitmap);
         }
 
 
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "onClick: ..." + view);
-                KApp application = (KApp) getActivity().getApplication();
-                application.setBitmap(bitmap);
-                ActivityOptionsCompat compat =
-                        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imageView, "sss");
-                Intent intent = new Intent(getActivity(), Actvity1.class);
-                intent.putExtra("album", albumName);
-                ActivityCompat.startActivity(getContext(), intent,
-                        compat.toBundle());
-            }
-        });
+//        imageView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Log.d(TAG, "onClick: ..." + view);
+//                KApp application = (KApp) getActivity().getApplication();
+//                application.setBitmap(bitmap);
+//                ActivityOptionsCompat compat =
+//                        ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imageView, "sss");
+//                Intent intent = new Intent(getActivity(), Actvity1.class);
+//                intent.putExtra("album", albumName);
+//                ActivityCompat.startActivity(getContext(), intent,
+//                        compat.toBundle());
+//            }
+//        });
 
         return view;
     }
@@ -80,4 +83,7 @@ public class MainActivityFragment extends Fragment {
 
     }
 
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
 }

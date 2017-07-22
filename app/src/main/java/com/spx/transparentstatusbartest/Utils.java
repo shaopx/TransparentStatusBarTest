@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 public class Utils {
 
     public static Bitmap decodeSampleBitmapFromFile(String path, int reqWidth, int reqHeight) {
+        if (path == null) return null;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         Bitmap bitmap = BitmapFactory.decodeFile(path, options);
