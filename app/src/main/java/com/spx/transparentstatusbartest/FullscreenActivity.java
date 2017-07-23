@@ -19,12 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/7/22.
+ * @author shaopx
  */
 
-public class Actvity1 extends FragmentActivity {
+public class FullscreenActivity extends FragmentActivity {
 
-    private static final String TAG = "Actvity1";
+    private static final String TAG = "FullscreenActivity";
 
     ImageView bgiv;
     ViewPager viewPager;
@@ -44,17 +44,16 @@ public class Actvity1 extends FragmentActivity {
 
         setContentView(R.layout.activity_1_layout);
 
-        RelativeLayout rootLayout = findViewById(R.id.rootRl);
         bgiv = findViewById(R.id.fullActivitybg);
         final KApp application = (KApp) getApplication();
         Log.d(TAG, "onCreate: bitmap:" + application.getBitmap());
         bgiv.setImageBitmap(application.getBitmap());
-//        rootLayout.setBackgroundResource(R.drawable.test_bg);
+
         String album = getIntent().getStringExtra("album");
         imagePathList = GalleryModel.getInstance().getImageListOfAlbum(album);
 
 
-        viewPager = (ViewPager) findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
         adapter = new FragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

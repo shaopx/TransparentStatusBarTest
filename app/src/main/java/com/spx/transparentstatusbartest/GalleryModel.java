@@ -22,7 +22,6 @@ public class GalleryModel {
 
     private HashMap<String, List<String>> mGruopMap = new HashMap<String, List<String>>();
     private List<String> groupList = new ArrayList<>();
-    private List<ImageBean> list = new ArrayList<ImageBean>();
 
     public List<String> getImageListOfAlbum(String album) {
         return mGruopMap.get(album);

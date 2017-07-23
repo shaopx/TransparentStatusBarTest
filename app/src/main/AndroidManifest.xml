@@ -21,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Actvity1" android:theme="@style/TranslucentTheme"/>
+        <activity android:name=".FullscreenActivity" android:theme="@style/TranslucentTheme"/>
     </application>
 
 </manifest>

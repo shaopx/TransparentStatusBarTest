@@ -19,6 +19,7 @@ import android.widget.ImageView;
 /**
  * @auther shaopx
  * @date 2017/7/23.
+ * @deprecated
  */
 
 public class RoundedImageView extends android.support.v7.widget.AppCompatImageView {

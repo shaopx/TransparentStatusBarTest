@@ -68,7 +68,7 @@ public class MainActivityFragment extends Fragment {
                 application.setBitmap(bitmap);
                 ActivityOptionsCompat compat =
                         ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imageView, "sss");
-                Intent intent = new Intent(getActivity(), Actvity1.class);
+                Intent intent = new Intent(getActivity(), FullscreenActivity.class);
                 intent.putExtra("album", albumName);
                 ActivityCompat.startActivity(getContext(), intent,
                         compat.toBundle());
