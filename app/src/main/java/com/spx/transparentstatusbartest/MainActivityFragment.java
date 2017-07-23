@@ -75,18 +75,23 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
-        imageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-
-                Bitmap bitmap = createViewBitmap(imageView);
-                bitmap = Utils.createRoundConerImage(bitmap, 9);
-                imageView.setImageBitmap(bitmap);
-
-                imageView.getViewTreeObserver().removeOnPreDrawListener(this);
-                return false;
-            }
-        });
+        /**
+         * 实现圆角的方法：
+         * 1. 使用SimpleRoundImageView
+         * 2. 使用下面注释掉的代码， 感觉性能会稍微差一点
+         */
+//        imageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+//            @Override
+//            public boolean onPreDraw() {
+//
+//                Bitmap bitmap = createViewBitmap(imageView);
+//                bitmap = Utils.createRoundConerImage(bitmap, 9);
+//                imageView.setImageBitmap(bitmap);
+//
+//                imageView.getViewTreeObserver().removeOnPreDrawListener(this);
+//                return false;
+//            }
+//        });
 
         return view;
     }
