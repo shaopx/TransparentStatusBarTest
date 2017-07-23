@@ -65,10 +65,14 @@ public class GalleryModel {
                     return;
                 }
 
+                mGruopMap.clear();
+                groupList.clear();
                 while (mCursor.moveToNext()) {
                     //获取图片的路径
                     String path = mCursor.getString(mCursor
                             .getColumnIndex(MediaStore.Images.Media.DATA));
+                    String title = mCursor.getString(mCursor
+                            .getColumnIndex(MediaStore.Images.Media.TITLE));
                     Log.d(TAG, "run: path:" + path);
 
                     //获取该图片的父路径名

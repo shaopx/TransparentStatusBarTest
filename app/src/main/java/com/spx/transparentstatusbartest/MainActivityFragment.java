@@ -2,6 +2,7 @@ package com.spx.transparentstatusbartest;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 /**
@@ -73,7 +75,28 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
+        imageView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+
+                Bitmap bitmap = createViewBitmap(imageView);
+                bitmap = Utils.createRoundConerImage(bitmap, 9);
+                imageView.setImageBitmap(bitmap);
+
+                imageView.getViewTreeObserver().removeOnPreDrawListener(this);
+                return false;
+            }
+        });
+
         return view;
+    }
+
+    public Bitmap createViewBitmap(View v) {
+        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        v.draw(canvas);
+        return bitmap;
     }
 
     private void launch() {
