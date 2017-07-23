@@ -74,14 +74,15 @@ public class FullscreenActivity extends FragmentActivity {
 
             }
         });
-
+        viewPager.setVisibility(View.INVISIBLE);
 
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
+                viewPager.setVisibility(View.VISIBLE);
                 bgiv.setVisibility(View.INVISIBLE);
             }
-        }, 500);
+        }, 800);
     }
 
     @Override
