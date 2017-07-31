@@ -58,7 +58,7 @@ public class FullScreenFragment extends Fragment {
         view = inflater.inflate(R.layout.fullscreen_fragment_layout, container, false);
         imageView = view.findViewById(R.id.imageView);
         Log.d(TAG, "onCreateView: ....position:" + position + ", picturePath:" + picturePath);
-        KApp application = (KApp) getActivity().getApplication();
+        Application application = (Application) getActivity().getApplication();
 
         int reqWidth = application.getScreenWidth() / 3;
         int reqHeight = application.getScreenHeight() / 3;

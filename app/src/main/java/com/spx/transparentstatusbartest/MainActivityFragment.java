@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
 /**
@@ -50,7 +49,7 @@ public class MainActivityFragment extends Fragment {
         view = inflater.inflate(R.layout.picture_fragment_layout, container, false);
         imageView = view.findViewById(R.id.imageView);
 
-        KApp application = (KApp) getActivity().getApplication();
+        Application application = (Application) getActivity().getApplication();
 
         int reqWidth = application.getScreenWidth() / 3;
         int reqHeight = application.getScreenHeight() / 3;
@@ -64,7 +63,7 @@ public class MainActivityFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Log.d(TAG, "onClick: ..." + view);
-                KApp application = (KApp) getActivity().getApplication();
+                Application application = (Application) getActivity().getApplication();
                 application.setBitmap(bitmap);
                 ActivityOptionsCompat compat =
                         ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), imageView, "sss");

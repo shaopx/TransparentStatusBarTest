@@ -1,13 +1,30 @@
 package com.spx.transparentstatusbartest;
 
-import android.app.Application;
 import android.graphics.Bitmap;
+
+import com.facebook.drawee.backends.pipeline.Fresco;
 
 /**
  * Created by Administrator on 2017/7/22.
  */
 
-public class KApp extends Application {
+public class Application extends android.app.Application {
+
+    private static Application sInstance = null;
+
+    private int screenWidth, screenHeight;
+    public Bitmap cachedBitmap;
+
+    public static Application getApplication() {
+        return sInstance;
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        sInstance = this;
+        Fresco.initialize(this);
+    }
 
     public int getScreenWidth() {
         return screenWidth;
@@ -25,21 +42,12 @@ public class KApp extends Application {
         this.screenHeight = screenHeight;
     }
 
-    private int screenWidth, screenHeight;
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
-    }
-
     public Bitmap getBitmap() {
-        return bitmap;
+        return cachedBitmap;
     }
 
     public void setBitmap(Bitmap bitmap) {
-        this.bitmap = bitmap;
+        this.cachedBitmap = bitmap;
     }
-
-    public Bitmap bitmap;
 }
 

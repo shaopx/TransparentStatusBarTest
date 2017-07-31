@@ -1,6 +1,5 @@
 package com.spx.transparentstatusbartest;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -13,7 +12,6 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +43,7 @@ public class FullscreenActivity extends FragmentActivity {
         setContentView(R.layout.activity_1_layout);
 
         bgiv = findViewById(R.id.fullActivitybg);
-        final KApp application = (KApp) getApplication();
+        final Application application = (Application) getApplication();
         Log.d(TAG, "onCreate: bitmap:" + application.getBitmap());
         bgiv.setImageBitmap(application.getBitmap());
 
